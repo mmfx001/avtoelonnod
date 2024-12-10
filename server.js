@@ -145,7 +145,10 @@ const tolovlarSchema = new mongoose.Schema({
 const Tolovlar = mongoose.model("Tolovlar", tolovlarSchema);
 
 
+// CRUD Routes Generator
 const createCRUDRoutes = (model, modelName) => {
+  const router = express.Router();
+
   // GET All items
   router.get('/', async (req, res) => {
     try {
@@ -201,7 +204,7 @@ const createCRUDRoutes = (model, modelName) => {
   router.get('/yengilavtomobil', async (req, res) => {
     const { marka } = req.query;
     try {
-      const similarCars = await model.find({ marka: marka });
+      const similarCars = await Yengilavtomobil.find({ marka: marka });  // Fetch from Yengilavtomobil model
       if (similarCars.length === 0) {
         return res.status(404).json({ message: `No cars found for marka: ${marka}` });
       }
