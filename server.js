@@ -33,7 +33,7 @@ const User = mongoose.model("User", userSchema);
 
 // Yengilavtomobil schema
 const yengilavtomobilSchema = new mongoose.Schema({
-  id: String,
+
   marka: String,
   userid: String,
   dvigatel: String,
@@ -66,7 +66,7 @@ const Yengilavtomobil = mongoose.model("Yengilavtomobil", yengilavtomobilSchema)
 
 // Maxsustexnika schema
 const maxsustexnikaSchema = new mongoose.Schema({
-  id: String,
+
   marka: String,
   userid: String,
   holati: String,
@@ -99,7 +99,7 @@ const Maxsustexnika = mongoose.model("Maxsustexnika", maxsustexnikaSchema);
 
 // Ehtiyotqisimlar schema
 const ehtiyotqisimlarSchema = new mongoose.Schema({
-  id: String,
+
   modeluchun: String,
   userid: String,
   kraska: String,
@@ -127,7 +127,7 @@ const Ehtiyotqisimlar = mongoose.model("Ehtiyotqisimlar", ehtiyotqisimlarSchema)
 
 // Tamirlashturi schema
 const tamirlashturiSchema = new mongoose.Schema({
-  id: String,
+
   userid: String,
   raqam: String,
   remontturi: String,
@@ -141,7 +141,7 @@ const Tamirlashturi = mongoose.model("Tamirlashturi", tamirlashturiSchema);
 
 // Tolovlar schema
 const tolovlarSchema = new mongoose.Schema({
-  id: String,
+
   summa: String,
   user: String,
   status: String,
@@ -166,7 +166,7 @@ const createCRUDRoutes = (model, modelName) => {
   });
 
   // GET Single item by ID
-  router.get('/:id', getItem(model, modelName), (req, res) => {
+  router.get('/:_id', getItem(model, modelName), (req, res) => {
     res.json(res.item);
   });
 
@@ -183,24 +183,24 @@ const createCRUDRoutes = (model, modelName) => {
   });
 
   // PUT Update item by ID
-  router.put('/:id', getItem(model, modelName), async (req, res) => {
+  router.put('/:_id', getItem(model, modelName), async (req, res) => {
     Object.assign(res.item, req.body);
     try {
       const updatedItem = await res.item.save();
       res.json(updatedItem);
     } catch (err) {
-      console.error(`PUT /${modelName.toLowerCase()}/${req.params.id} error:`, err.message);
+      console.error(`PUT /${modelName.toLowerCase()}/${req.params._id} error:`, err.message);
       res.status(400).json({ message: err.message });
     }
   });
 
   // DELETE Item by ID
-  router.delete('/:id', getItem(model, modelName), async (req, res) => {
+  router.delete('/:_id', getItem(model, modelName), async (req, res) => {
     try {
       await res.item.remove();
       res.json({ message: `${modelName} deleted` });
     } catch (err) {
-      console.error(`DELETE /${modelName.toLowerCase()}/${req.params.id} error:`, err.message);
+      console.error(`DELETE /${modelName.toLowerCase()}/${req.params._id} error:`, err.message);
       res.status(500).json({ message: err.message });
     }
   });
@@ -213,12 +213,12 @@ function getItem(model, modelName) {
   return async (req, res, next) => {
     let item;
     try {
-      item = await model.findOne({ id: req.params.id });
+      item = await model.findOne({ id: req.params._id });
       if (item == null) {
         return res.status(404).json({ message: `${modelName} not found` });
       }
     } catch (err) {
-      console.error(`GET_ITEM /${modelName.toLowerCase()}/${req.params.id} error:`, err.message);
+      console.error(`GET_ITEM /${modelName.toLowerCase()}/${req.params._id} error:`, err.message);
       return res.status(500).json({ message: err.message });
     }
 
