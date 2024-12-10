@@ -143,23 +143,7 @@ const tolovlarSchema = new mongoose.Schema({
   chekimg: String
 });
 const Tolovlar = mongoose.model("Tolovlar", tolovlarSchema);
-function getItem(model, modelName) {
-  return async (req, res, next) => {
-    let item;
-    try {
-      item = await model.findById(req.params._id);  // Use _id instead of id
-      if (item == null) {
-        return res.status(404).json({ message: `${modelName} not found` });
-      }
-    } catch (err) {
-      console.error(`GET_ITEM /${modelName.toLowerCase()}/${req.params._id} error:`, err.message);
-      return res.status(500).json({ message: err.message });
-    }
 
-    res.item = item;
-    next();
-  };
-}
 
 const createCRUDRoutes = (model, modelName) => {
   // GET All items
@@ -230,6 +214,25 @@ const createCRUDRoutes = (model, modelName) => {
 
   return router;
 };
+
+// Middleware: Fetch an item by ID
+function getItem(model, modelName) {
+  return async (req, res, next) => {
+    let item;
+    try {
+      item = await model.findById(req.params._id);  // Use _id instead of id
+      if (item == null) {
+        return res.status(404).json({ message: `${modelName} not found` });
+      }
+    } catch (err) {
+      console.error(`GET_ITEM /${modelName.toLowerCase()}/${req.params._id} error:`, err.message);
+      return res.status(500).json({ message: err.message });
+    }
+
+    res.item = item;
+    next();
+  };
+}
 
 // Use CRUD routes for each model
 app.use('/users', createCRUDRoutes(User, 'User'));
