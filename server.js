@@ -143,11 +143,25 @@ const tolovlarSchema = new mongoose.Schema({
   chekimg: String
 });
 const Tolovlar = mongoose.model("Tolovlar", tolovlarSchema);
+function getItem(model, modelName) {
+  return async (req, res, next) => {
+    let item;
+    try {
+      item = await model.findById(req.params._id);  // Use _id instead of id
+      if (item == null) {
+        return res.status(404).json({ message: `${modelName} not found` });
+      }
+    } catch (err) {
+      console.error(`GET_ITEM /${modelName.toLowerCase()}/${req.params._id} error:`, err.message);
+      return res.status(500).json({ message: err.message });
+    }
 
-// CRUD route generator
+    res.item = item;
+    next();
+  };
+}
+
 const createCRUDRoutes = (model, modelName) => {
-  const router = express.Router();
-
   // GET All items
   router.get('/', async (req, res) => {
     try {
@@ -199,27 +213,23 @@ const createCRUDRoutes = (model, modelName) => {
     }
   });
 
+  // New route to fetch cars by brand (marka)
+  router.get('/yengilavtomobil', async (req, res) => {
+    const { marka } = req.query;
+    try {
+      const similarCars = await model.find({ marka: marka });
+      if (similarCars.length === 0) {
+        return res.status(404).json({ message: `No cars found for marka: ${marka}` });
+      }
+      res.json(similarCars);
+    } catch (err) {
+      console.error('Error fetching similar cars:', err.message);
+      res.status(500).json({ message: err.message });
+    }
+  });
+
   return router;
 };
-
-// Middleware: Fetch an item by ID
-function getItem(model, modelName) {
-  return async (req, res, next) => {
-    let item;
-    try {
-      item = await model.findById(req.params._id);  // Use _id instead of id
-      if (item == null) {
-        return res.status(404).json({ message: `${modelName} not found` });
-      }
-    } catch (err) {
-      console.error(`GET_ITEM /${modelName.toLowerCase()}/${req.params._id} error:`, err.message);
-      return res.status(500).json({ message: err.message });
-    }
-
-    res.item = item;
-    next();
-  };
-}
 
 // Use CRUD routes for each model
 app.use('/users', createCRUDRoutes(User, 'User'));
