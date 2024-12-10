@@ -16,14 +16,13 @@ app.use(bodyParser.json());
 
 // Connect to MongoDB
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("MongoDB connectedd"))
+  .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log(err));
 
 // Define Mongoose schemas for collections
 
 // Users schema
 const userSchema = new mongoose.Schema({
-  id: String,
   nomer: String,
   parol: String,
   hisob: Number,
@@ -33,7 +32,6 @@ const User = mongoose.model("User", userSchema);
 
 // Yengilavtomobil schema
 const yengilavtomobilSchema = new mongoose.Schema({
-
   marka: String,
   userid: String,
   dvigatel: String,
@@ -66,7 +64,6 @@ const Yengilavtomobil = mongoose.model("Yengilavtomobil", yengilavtomobilSchema)
 
 // Maxsustexnika schema
 const maxsustexnikaSchema = new mongoose.Schema({
-
   marka: String,
   userid: String,
   holati: String,
@@ -99,7 +96,6 @@ const Maxsustexnika = mongoose.model("Maxsustexnika", maxsustexnikaSchema);
 
 // Ehtiyotqisimlar schema
 const ehtiyotqisimlarSchema = new mongoose.Schema({
-
   modeluchun: String,
   userid: String,
   kraska: String,
@@ -127,7 +123,6 @@ const Ehtiyotqisimlar = mongoose.model("Ehtiyotqisimlar", ehtiyotqisimlarSchema)
 
 // Tamirlashturi schema
 const tamirlashturiSchema = new mongoose.Schema({
-
   userid: String,
   raqam: String,
   remontturi: String,
@@ -141,7 +136,6 @@ const Tamirlashturi = mongoose.model("Tamirlashturi", tamirlashturiSchema);
 
 // Tolovlar schema
 const tolovlarSchema = new mongoose.Schema({
-
   summa: String,
   user: String,
   status: String,
@@ -213,7 +207,7 @@ function getItem(model, modelName) {
   return async (req, res, next) => {
     let item;
     try {
-      item = await model.findOne({ id: req.params._id });
+      item = await model.findById(req.params._id);  // Use _id instead of id
       if (item == null) {
         return res.status(404).json({ message: `${modelName} not found` });
       }
