@@ -37,6 +37,7 @@ const yengilavtomobilSchema = new mongoose.Schema({
   dvigatel: String,
   qutisi: String,
   texnikaturi: String,
+  turi: String,
   kraska: String,
   rang: String,
   yoqilgi: String,
@@ -73,6 +74,8 @@ const maxsustexnikaSchema = new mongoose.Schema({
   qutisi: String,
   texnikaturi: String,
   model: String,
+  turi: String,
+  
   pozitsiya: String,
   kraska: String,
   rang: String,
@@ -106,6 +109,8 @@ const ehtiyotqisimlarSchema = new mongoose.Schema({
   holati: String,
   qismturi: String,
   model: String,
+  turi: String,
+
   pozitsiya: String,
   yetkazish: String,
   rang: String,
@@ -134,6 +139,8 @@ const tamirlashturiSchema = new mongoose.Schema({
   model: String,
   pozitsiya: String,
   remontturi: String,
+  turi: String,
+
   elonnomi: String,
   tafsilot: String,
   shahar: String,
