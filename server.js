@@ -214,8 +214,61 @@ const createCRUDRoutes = (model, modelName) => {
       res.status(500).json({ message: err.message });
     }
   });
+  router.get('/tolovlar', async (req, res) => {
+    const { marka } = req.query;
+    try {
+      const similarCars = await model.find({ marka: marka });
+      if (similarCars.length === 0) {
+        return res.status(404).json({ message: `No cars found for marka: ${marka}` });
+      }
+      res.json(similarCars);
+    } catch (err) {
+      console.error('Error fetching similar cars:', err.message);
+      res.status(500).json({ message: err.message });
+    }
+  });
   
-
+  
+  router.get('/tamirlashturi', async (req, res) => {
+    const { marka } = req.query;
+    try {
+      const similarCars = await model.find({ marka: marka });
+      if (similarCars.length === 0) {
+        return res.status(404).json({ message: `No cars found for marka: ${marka}` });
+      }
+      res.json(similarCars);
+    } catch (err) {
+      console.error('Error fetching similar cars:', err.message);
+      res.status(500).json({ message: err.message });
+    }
+  });
+  router.get('/ehtiyotqisimlar', async (req, res) => {
+    const { marka } = req.query;
+    try {
+      const similarCars = await model.find({ marka: marka });
+      if (similarCars.length === 0) {
+        return res.status(404).json({ message: `No cars found for marka: ${marka}` });
+      }
+      res.json(similarCars);
+    } catch (err) {
+      console.error('Error fetching similar cars:', err.message);
+      res.status(500).json({ message: err.message });
+    }
+  });
+  router.get('/maxsustexnika', async (req, res) => {
+    const { marka } = req.query;
+    try {
+      const similarCars = await model.find({ marka: marka });
+      if (similarCars.length === 0) {
+        return res.status(404).json({ message: `No cars found for marka: ${marka}` });
+      }
+      res.json(similarCars);
+    } catch (err) {
+      console.error('Error fetching similar cars:', err.message);
+      res.status(500).json({ message: err.message });
+    }
+  });
+  
   return router;
 };
 
